@@ -7,17 +7,20 @@ import java.awt.image.BufferedImage;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_L1;
+import object.OBJ_Sword_L1;
 
 public class Player extends Entity {
 
 	KeyHandler keyH;
 	public final int screenX;
 	public final int screenY;
+	public boolean attackCanceled = false;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
 		super(gp);
-		 
+		
 		this.keyH = keyH;
 		
 		screenX = gp.screenWidth/2 - (gp.tileSize/2);
@@ -45,8 +48,24 @@ public class Player extends Entity {
 		direction = "down";
 		
 		// player stats
+		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		strength = 1;
+		dexterity = 1; // determines defense
+		exp = 0;
+		nextLevelExp = 5;
+		coin = 0;
+		currentWeapon = new OBJ_Sword_L1(gp);
+		currentShield = new OBJ_Shield_L1(gp);
+		attack = getAttack(); // strength * weapon
+		defense = getDefense(); // dexterity * shield
+	}
+	public int getAttack() {
+		return attack = strength * currentWeapon.attackValue;
+	}
+	public int getDefense() {
+		return defense = dexterity * currentShield.defenseValue;
 	}
 	public void getPlayerImage() {
 		
@@ -131,7 +150,15 @@ public class Player extends Entity {
 				case "right": worldX += speed; break;
 				}
 			}
+			
+			if (keyH.enterPressed == true && attackCanceled == false) {
+				gp.playSE(7);
+				attacking = true;
+				spriteCounter = 0;
+			}
+			attackCanceled = false;
 			gp.keyH.enterPressed = false;
+			
 			spriteCounter++;
 			if (spriteCounter > 10) {
 				if(spriteNum == 1) {
@@ -204,12 +231,9 @@ public class Player extends Entity {
 	public void interactNPC(int i) {
 		if (gp.keyH.enterPressed == true) {
 			if(i != 999) {
+				attackCanceled = true;
 				gp.gameState = gp.dialogueState;
 				gp.npc[i].speak();
-			}
-			else {
-				gp.playSE(7);
-				attacking = true;
 			}
 		}
 	}
@@ -227,11 +251,13 @@ public class Player extends Entity {
 	public void damageMonster(int i) {
 		if (i != 999) {
 			if(gp.monster[i].invincible == false) {
+				gp.playSE(8);
 				gp.monster[i].life -= 1;
 				gp.monster[i].invincible = true;
+				gp.monster[i].damageReaction();
 				
 				if(gp.monster[i].life <= 0) {
-					gp.monster[i] = null;
+					gp.monster[i].dying = true;
 				}
 			}
 		}

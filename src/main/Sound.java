@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class Sound {
 
@@ -21,20 +22,17 @@ public class Sound {
 		soundURL[5] = getClass().getResource("/sound/title.wav");
 		soundURL[6] = getClass().getResource("/sound/SFX_TAKE_DAMAGE.wav");
 		soundURL[7] = getClass().getResource("/sound/slash.wav");
+		soundURL[8] = getClass().getResource("/sound/DAMAGE_ENEMY.wav");
 	}
 
 	public void setFile(int i) {
-		
 		try {
-			
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
 			clip = AudioSystem.getClip();
-			clip.open(ais);
-			
+			clip.open(ais);	
 		} catch(Exception e) {
-			
+			e.printStackTrace();
 		}
-		
 	}
 	public void play() {
 		clip.start();
@@ -44,5 +42,9 @@ public class Sound {
 	}
 	public void stop() {
 		clip.stop();
+	}
+	public void adujstVolume() {
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(-5.0f);
 	}
 }

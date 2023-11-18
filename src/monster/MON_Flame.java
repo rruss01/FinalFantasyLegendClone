@@ -15,7 +15,7 @@ public class MON_Flame extends Entity {
 		type = 2;
 		name = "Flame";
 		speed = 2;
-		maxLife = 4;
+		maxLife = 8;
 		life = maxLife;
 		
 		solidArea.x = 3;
@@ -62,4 +62,9 @@ public class MON_Flame extends Entity {
 		}
 	}
 
+	public void damageReaction() {
+		actionLockCounter = 0;
+		direction = gp.player.direction;
+	}
+	
 }

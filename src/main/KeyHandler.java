@@ -20,67 +20,76 @@ public class KeyHandler implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
 	
-		if (gp.gameState == gp.titleState) { 
-			if (code == KeyEvent.VK_W || code == KeyEvent.VK_A) {
-				gp.ui.commandNum--;
-				if (gp.ui.commandNum < 0) {
-					gp.ui.commandNum = 2;
-				}
-			}
-			if (code == KeyEvent.VK_S || code == KeyEvent.VK_D) {
-				gp.ui.commandNum++;
-				if (gp.ui.commandNum > 2) {
-					gp.ui.commandNum = 0;
-				}
-			}
-			if (code == KeyEvent.VK_ENTER) {
-				switch (gp.ui.commandNum) {
-				case 0:
-					gp.gameState = gp.playState;
-					gp.stopMusic();
-					gp.playMusic(0);
-					break;
-				case 1:
-					break;
-				case 2:
-					System.exit(0);
-				}
+		if (gp.gameState == gp.titleState) { titleState(code);}
+		else if (gp.gameState == gp.playState) {playState(code);} 
+		else if (gp.gameState == gp.pauseState) {pauseState(code);}
+		else if (gp.gameState == gp.dialogueState) {dialogueState(code);}
+		else if(gp.gameState == gp.characterState) {characterState(code);}
+	}
+	public void titleState(int code) {
+		if (code == KeyEvent.VK_W || code == KeyEvent.VK_A) {
+			gp.ui.commandNum--;
+			if (gp.ui.commandNum < 0) {
+				gp.ui.commandNum = 2;
 			}
 		}
-		// PLAY STATE
-		else if (gp.gameState == gp.playState) {
-			if (code == KeyEvent.VK_W) {
-				upPressed = true;
+		if (code == KeyEvent.VK_S || code == KeyEvent.VK_D) {
+			gp.ui.commandNum++;
+			if (gp.ui.commandNum > 2) {
+				gp.ui.commandNum = 0;
 			}
-			if (code == KeyEvent.VK_S) {
-				downPressed = true;
-			}
-			if (code == KeyEvent.VK_A) {
-				leftPressed = true;
-			}
-			if (code == KeyEvent.VK_D) {
-				rightPressed = true;
-			}
-			if (code == KeyEvent.VK_P) {
-				gp.gameState = gp.pauseState;
-			}
-			if (code == KeyEvent.VK_ENTER) {
-				enterPressed = true;
-			}
-		} 
-		// PAUSE STATE
-		if (gp.gameState == gp.pauseState) {
-			if (code == KeyEvent.VK_P) {
+		}
+		if (code == KeyEvent.VK_ENTER) {
+			switch (gp.ui.commandNum) {
+			case 0:
 				gp.gameState = gp.playState;
+				gp.stopMusic();
+				gp.playMusic(0);
+				break;
+			case 1:
+				break;
+			case 2:
+				System.exit(0);
 			}
 		}
-		// DIALOGUE STATE
-		if (gp.gameState == gp.dialogueState) {
-			if(code == KeyEvent.VK_ENTER) {
-				gp.gameState = gp.playState;
-			}
+	}
+	public void playState(int code) {
+		if (code == KeyEvent.VK_W) {
+			upPressed = true;
 		}
-		
+		if (code == KeyEvent.VK_S) {
+			downPressed = true;
+		}
+		if (code == KeyEvent.VK_A) {
+			leftPressed = true;
+		}
+		if (code == KeyEvent.VK_D) {
+			rightPressed = true;
+		}
+		if (code == KeyEvent.VK_P) {
+			gp.gameState = gp.pauseState;
+		}
+		if (code == KeyEvent.VK_C) {
+			gp.gameState = gp.characterState;
+		}
+		if (code == KeyEvent.VK_ENTER) {
+			enterPressed = true;
+		}
+	}
+	public void pauseState(int code) {
+		if (code == KeyEvent.VK_P) {
+			gp.gameState = gp.playState;
+		}
+	}
+	public void dialogueState(int code) {
+		if(code == KeyEvent.VK_ENTER) {
+			gp.gameState = gp.playState;
+		}
+	}
+	public void characterState(int code) {
+		if (code == KeyEvent.VK_C) {
+			gp.gameState = gp.playState;
+		}
 	}
 
 	@Override
