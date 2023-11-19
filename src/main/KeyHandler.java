@@ -30,12 +30,14 @@ public class KeyHandler implements KeyListener {
 	public void titleState(int code) {
 		if (code == KeyEvent.VK_W || code == KeyEvent.VK_A) {
 			gp.ui.commandNum--;
+			gp.playSE(11);
 			if (gp.ui.commandNum < 0) {
 				gp.ui.commandNum = 2;
 			}
 		}
 		if (code == KeyEvent.VK_S || code == KeyEvent.VK_D) {
 			gp.ui.commandNum++;
+			gp.playSE(11);
 			if (gp.ui.commandNum > 2) {
 				gp.ui.commandNum = 0;
 			}
@@ -107,19 +109,19 @@ public class KeyHandler implements KeyListener {
 				gp.playSE(11);
 			}
 		}
-		if(code == KeyEvent.VK_S) {
+		else if(code == KeyEvent.VK_S) {
 			if (gp.ui.slotRow != 3) {
 				gp.ui.slotRow++;
 				gp.playSE(11);
 			}
 		}
-		if(code == KeyEvent.VK_A) {
+		else if(code == KeyEvent.VK_A) {
 			if (gp.ui.slotCol != 0) {
 				gp.ui.slotCol--;
 				gp.playSE(11);
 			}
 		}
-		if(code == KeyEvent.VK_D) {
+		else if(code == KeyEvent.VK_D) {
 			if (gp.ui.slotCol != 4) {
 				gp.ui.slotCol++;
 				gp.playSE(11);

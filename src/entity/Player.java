@@ -177,7 +177,7 @@ public class Player extends Entity {
 			}
 			
 			if (keyH.enterPressed == true && attackCanceled == false) {
-				gp.playSE(7);
+				if (currentWeapon.type == type_sword) {gp.playSE(7);}
 				attacking = true;
 				spriteCounter = 0;
 			}
@@ -212,14 +212,48 @@ public class Player extends Entity {
 	
 	public void attack() {
 		spriteCounter++;
-		if(spriteCounter <= 5) {spriteNum = 1;}
-		if(spriteCounter >  5 && spriteCounter <= 10) {spriteNum = 2; detectHit();}
-		if(spriteCounter > 10 && spriteCounter <= 15) {spriteNum = 3; detectHit();}
-		if(spriteCounter > 15 && spriteCounter <= 25) {spriteNum = 4; detectHit();}
-		if(spriteCounter > 25) {
-			spriteNum = 1;
-			spriteCounter = 0;
-			attacking = false;
+		if (currentWeapon.type == type_sword) {
+			if (spriteCounter <= 5) {
+				spriteNum = 1;
+			}
+			if (spriteCounter > 5 && spriteCounter <= 10) {
+				spriteNum = 2;
+				detectHit();
+			}
+			if (spriteCounter > 10 && spriteCounter <= 15) {
+				spriteNum = 3;
+				detectHit();
+			}
+			if (spriteCounter > 15 && spriteCounter <= 25) {
+				spriteNum = 4;
+				detectHit();
+			}
+			if (spriteCounter > 25) {
+				spriteNum = 1;
+				spriteCounter = 0;
+				attacking = false;
+			} 
+		}
+		if (currentWeapon.type == type_axe) {
+			if (spriteCounter <= 15) {
+				spriteNum = 1;
+			}
+			if (spriteCounter > 15 && spriteCounter <= 20) {
+				spriteNum = 2;
+			}
+			if (spriteCounter > 20 && spriteCounter <= 25) {
+				spriteNum = 3;
+			}
+			if(spriteCounter == 20) {gp.playSE(7);}
+			if (spriteCounter > 25 && spriteCounter <= 35) {
+				spriteNum = 4;
+				detectHit();
+			}
+			if (spriteCounter > 35) {
+				spriteNum = 1;
+				spriteCounter = 0;
+				attacking = false;
+			} 
 		}
 	}
 	

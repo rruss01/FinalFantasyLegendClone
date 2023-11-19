@@ -43,9 +43,7 @@ public class EventHandler {
 			canTouchEvent = true;
 		}
 		if (canTouchEvent == true) {
-			if (hit(25, 21, "right") == true) {damagePit(25, 21, gp.dialogueState); }
 			if (hit(23, 7, "up") == true) { healingPool(23, 27, gp.dialogueState); }
-			if (hit(18, 21, "left") == true) {warp(25, 21, gp.playState); }
 		}
 	}
 	public boolean hit(int col, int row, String reqDirection) {
