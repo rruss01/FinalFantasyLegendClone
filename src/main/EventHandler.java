@@ -95,6 +95,7 @@ public class EventHandler {
 			gp.player.life = gp.player.maxLife;
 			gp.playSE(4);
 			canTouchEvent = false;
+			gp.aSetter.setMonsters();
 		}
 	}
 	

@@ -48,7 +48,6 @@ public class Entity {
 	int hpBarCounter;
 	
 	// character attributes
-	public int type; // 0 = player, 1 = npc, 2 = monster
 	public String name;
 	public int speed;
 	public int maxLife;
@@ -67,6 +66,17 @@ public class Entity {
 	// item attributes
 	public int attackValue;
 	public int defenseValue;
+	public String description = "";
+	// type
+	public int type;
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_sword = 3;
+	public final int type_axe = 4;
+	public final int type_shield = 5;
+	public final int type_consumable = 6;
+
 	
 	public Entity(GamePanel gp) {
 		this.gp = gp;
@@ -97,6 +107,7 @@ public class Entity {
 		}
 	}
 	
+	public void use(Entity entity) {}
 	
 	public void update() {
 		setAction();
@@ -108,11 +119,14 @@ public class Entity {
 		gp.cChecker.checkEntity(this, gp.monster);
 		boolean contactPlayer = gp.cChecker.checkPlayer(this);
 		
-		// pretty sure this is temporary, as all monsters won't do the same damage in the final product
-		if(this.type == 2 && contactPlayer == true) {
+		if(this.type == type_monster && contactPlayer == true) {
 			if (gp.player.invincible == false) {
 				gp.playSE(6);
-				gp.player.life -= 1;
+				int damage = attack - gp.player.defense;
+				if(damage < 0) {
+					damage = 0;
+				}
+				gp.player.life -= damage;
 				gp.player.invincible = true;
 			}
 		}
@@ -181,6 +195,7 @@ public class Entity {
 				
 				double oneScale = (double)gp.tileSize/maxLife;
 				double hpBarValue = oneScale*life;
+				if(hpBarValue < 0) { hpBarValue = 0; }
 				
 				// DRAWS HP BAR
 				g2.setColor(new Color(35, 35, 35));

@@ -12,11 +12,15 @@ public class MON_Flame extends Entity {
 	public MON_Flame(GamePanel gp) {
 		super(gp);
 		this.gp = gp;
-		type = 2;
+		
+		type = type_monster;
 		name = "Flame";
 		speed = 2;
 		maxLife = 8;
 		life = maxLife;
+		attack = 5;
+		defense = 0;
+		exp = 5;
 		
 		solidArea.x = 3;
 		solidArea.y = 18;

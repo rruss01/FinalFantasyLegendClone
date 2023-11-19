@@ -23,6 +23,12 @@ public class Sound {
 		soundURL[6] = getClass().getResource("/sound/SFX_TAKE_DAMAGE.wav");
 		soundURL[7] = getClass().getResource("/sound/slash.wav");
 		soundURL[8] = getClass().getResource("/sound/DAMAGE_ENEMY.wav");
+		soundURL[9] = getClass().getResource("/sound/SFX_SAVE.wav");
+		soundURL[10] = getClass().getResource("/sound/SFX_LEVEL_UP.wav");
+		soundURL[11] = getClass().getResource("/sound/SFX_CURSOR.wav");
+		soundURL[12] = getClass().getResource("/sound/SFX_START_MENU.wav");
+		soundURL[13] = getClass().getResource("/sound/SFX_INTRO_HIP.wav");
+		soundURL[14] = getClass().getResource("/sound/SFX_INTRO_HOP.wav");
 	}
 
 	public void setFile(int i) {
