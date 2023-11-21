@@ -53,6 +53,9 @@ public class Player extends Entity {
 		level = 1;
 		maxLife = 6;
 		life = maxLife;
+		maxMana = 4;
+		mana = maxMana;
+		ammo = 10;
 		strength = 1;
 		dexterity = 1; // determines defense
 		exp = 0;
@@ -60,13 +63,13 @@ public class Player extends Entity {
 		coin = 0;
 		currentWeapon = new OBJ_Sword_L1(gp);
 		currentShield = new OBJ_Shield_L1(gp);
+		projectile = new OBJ_Fireball(gp);
 		attack = getAttack(); // strength * weapon
 		defense = getDefense(); // dexterity * shield
 	}
 	public void setItems() {
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
-		inventory.add(new OBJ_Key(gp));
 		inventory.add(new OBJ_Key(gp));
 	}
 	public int getAttack() {
@@ -201,6 +204,21 @@ public class Player extends Entity {
 				standCounter = 0;
 			}
 		}
+		// can only shoot one projectile at a time
+		if(gp.keyH.projectilePressed == true && projectile.alive == false
+				&& projectileCounter == 30 && projectile.haveResource(this) == true) {
+			// set default coords, direction and user
+			projectile.set(worldX, worldY, direction, true, this);
+			
+			projectile.subtractResource(this);
+			
+			gp.projectileList.add(projectile);
+			
+			projectileCounter = 0;
+			
+			gp.playSE(15);
+		}
+		
 		if (invincible == true) {
 			iFramesCounter++;
 			if (iFramesCounter > 60) {
@@ -208,8 +226,16 @@ public class Player extends Entity {
 				iFramesCounter = 0;
 			}
 		}
+		if(projectileCounter < 30) {
+			projectileCounter++;
+		}
+		if(life > maxLife) {
+		life = maxLife;
+		}
+		if(mana > maxMana) {
+			mana = maxMana;
+		}
 	}
-	
 	public void attack() {
 		spriteCounter++;
 		if (currentWeapon.type == type_sword) {
@@ -256,19 +282,26 @@ public class Player extends Entity {
 			} 
 		}
 	}
-	
 	public void pickUpObject(int i) {
 		if(i != 999) {
-			String text;
-			if(inventory.size() != maxInventorySize) {
-				inventory.add(gp.obj[i]);
-				text = "Got a "+gp.obj[i].name + "!";
+			
+			// PICKUP-ONLY ITEMS
+			if(gp.obj[i].type == type_pickup_only) {
+				gp.obj[i].use(this);
+				gp.obj[i] = null;
 			} else {
-				text = "You cannot carry any more!";
+				// INVENTORY ITEMS
+				String text;
+				if(inventory.size() != maxInventorySize) {
+					inventory.add(gp.obj[i]);
+					text = "Got a "+gp.obj[i].name + "!";
+				} else {
+					text = "You cannot carry any more!";
+				}
+				gp.ui.addMessage(text);
+				gp.playSE(13);
+				gp.obj[i] = null;
 			}
-			gp.ui.addMessage(text);
-			gp.playSE(13);
-			gp.obj[i] = null;
 		}
 	}
 	public void detectHit() {
@@ -289,7 +322,7 @@ public class Player extends Entity {
 		solidArea.height = hitbox.height;
 		
 		int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
-		damageMonster(monsterIndex);
+		damageMonster(monsterIndex, attack);
 		
 		worldX = currentWorldX;
 		worldY = currentWorldY;
@@ -306,10 +339,9 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
 	public void contactMonster(int i) {
 		if (i != 999) {
-			if(invincible == false) {
+			if(invincible == false && gp.monster[i].dying == false) {
 				gp.playSE(6);
 				int damage = gp.monster[i].attack - defense;
 				if(damage < 0) {
@@ -320,8 +352,7 @@ public class Player extends Entity {
 			}
 		}
 	}
-	
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		if (i != 999) {
 			if(gp.monster[i].invincible == false) {
 				gp.playSE(8);

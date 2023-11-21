@@ -29,6 +29,7 @@ public class Sound {
 		soundURL[12] = getClass().getResource("/sound/SFX_START_MENU.wav");
 		soundURL[13] = getClass().getResource("/sound/SFX_INTRO_HIP.wav");
 		soundURL[14] = getClass().getResource("/sound/SFX_INTRO_HOP.wav");
+		soundURL[15] = getClass().getResource("/sound/fireball.wav");
 	}
 
 	public void setFile(int i) {

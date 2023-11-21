@@ -4,6 +4,7 @@ import java.util.Random;
 
 import entity.Entity;
 import main.GamePanel;
+import object.*;
 
 public class MON_Flame extends Entity {
 
@@ -21,6 +22,7 @@ public class MON_Flame extends Entity {
 		attack = 5;
 		defense = 0;
 		exp = 5;
+		projectile = new OBJ_Rock(gp);
 		
 		solidArea.x = 3;
 		solidArea.y = 18;
@@ -64,11 +66,29 @@ public class MON_Flame extends Entity {
 			
 			actionLockCounter = 0;
 		}
+		int i = new Random().nextInt(100)+1;
+		if(i > 99 && projectile.alive == false && projectileCounter == 30) {
+			
+			projectile.set(worldX, worldY, direction, true, this);
+			gp.projectileList.add(projectile);
+			projectileCounter = 0;
+		}
 	}
 
 	public void damageReaction() {
 		actionLockCounter = 0;
 		direction = gp.player.direction;
 	}
-	
+	public void checkDrop() {
+		int i = new Random().nextInt(100)+1;
+		if(i < 50) {
+			dropItem(new OBJ_Coin_Bronze(gp));
+		}
+		if(i >= 50 && i < 75) {
+			dropItem(new OBJ_Heart(gp));
+		}
+		if(i >= 75 && i < 100) {
+			dropItem(new OBJ_ManaCrystal(gp));
+		}
+	}
 }

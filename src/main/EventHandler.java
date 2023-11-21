@@ -31,7 +31,6 @@ public class EventHandler {
 				row++;
 			}
 		}
-		
 	}
 	
 	public void checkEvent() {
