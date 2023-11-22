@@ -1,6 +1,7 @@
 package main;
 
 import entity.*;
+import interactive_tile.IT_DryTree;
 import monster.*;
 import object.*;
 
@@ -65,6 +66,22 @@ public class AssetSetter {
 		gp.monster[i] = new MON_Flame(gp);
 		gp.monster[i].worldX = gp.tileSize*27;
 		gp.monster[i].worldY = gp.tileSize*37;
+		i++;
+	}
+	
+	public void setInteractiveTile() {
+		int i = 0;
+		gp.iTile[i] = new IT_DryTree(gp, 27, 7);
+		i++;
+		gp.iTile[i] = new IT_DryTree(gp, 28, 7);
+		i++;
+		gp.iTile[i] = new IT_DryTree(gp, 29, 7);
+		i++;
+		gp.iTile[i] = new IT_DryTree(gp, 30, 7);
+		i++;
+		gp.iTile[i] = new IT_DryTree(gp, 31, 7);
+		i++;
+		gp.iTile[i] = new IT_DryTree(gp, 32, 7);
 		i++;
 	}
 }

@@ -165,6 +165,8 @@ public class Player extends Entity {
 			int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 			contactMonster(monsterIndex);
 			
+			gp.cChecker.checkEntity(this, gp.iTile);
+			
 			// check events
 			gp.eHandler.checkEvent();
 			
@@ -324,12 +326,28 @@ public class Player extends Entity {
 		int monsterIndex = gp.cChecker.checkEntity(this, gp.monster);
 		damageMonster(monsterIndex, attack);
 		
+		int iTileIndex = gp.cChecker.checkEntity(this, gp.iTile);
+		damageInteractiveTile(iTileIndex);
+		
 		worldX = currentWorldX;
 		worldY = currentWorldY;
 		solidArea.width = solidAreaWidth;
 		solidArea.height = solidAreaHeight;
 	}
 	
+	public void damageInteractiveTile(int i) {
+		if(i != 999 && gp.iTile[i].destructible == true 
+				&& gp.iTile[i].isCorrectItem(this) == true && gp.iTile[i].invincible == false) {
+			// gp.iTile[i].playSE();
+			gp.iTile[i].life--;
+			gp.iTile[i].invincible = true;
+			
+			if (gp.iTile[i].life <= 0) {
+				gp.iTile[i] = gp.iTile[i].getDestroyedForm();
+			}
+		}
+		
+	}
 	public void interactNPC(int i) {
 		if (gp.keyH.enterPressed == true) {
 			if(i != 999) {
