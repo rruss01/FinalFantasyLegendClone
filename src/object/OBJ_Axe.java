@@ -11,8 +11,8 @@ public class OBJ_Axe extends Entity {
 		name = "Axe";
 		down1 = setup("/objects/axe");
 		attackValue = 2;
-		hitbox.width = (gp.tileSize * 2) - (gp.tileSize/4);
-		hitbox.height = (gp.tileSize * 2) - (gp.tileSize/4);
+		hitbox.width = (gp.tileSize * 2) - (gp.tileSize/3);
+		hitbox.height = (gp.tileSize * 2) - (gp.tileSize/3);
 		
 		description = " "+name+"\n"
 				+ "Old but can still\n"

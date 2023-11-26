@@ -67,7 +67,19 @@ public class Player extends Entity {
 		attack = getAttack(); // strength * weapon
 		defense = getDefense(); // dexterity * shield
 	}
+	public void setDefaultPositions() {
+		worldX = gp.tileSize * 23;
+		worldY = gp.tileSize * 21;
+		direction = "down";
+	}
+	public void restoreLifeAndMana() {
+		life = maxLife;
+		mana = maxMana;
+		invincible = false;
+	}
 	public void setItems() {
+		
+		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new OBJ_Key(gp));
@@ -237,6 +249,12 @@ public class Player extends Entity {
 		if(mana > maxMana) {
 			mana = maxMana;
 		}
+		if(life <= 0) {
+			gp.gameState = gp.gameOverState;
+			gp.ui.commandNum = -1;
+			gp.stopMusic();
+			// gp.playSE(); game over sound
+		}
 	}
 	public void attack() {
 		spriteCounter++;
@@ -317,7 +335,7 @@ public class Player extends Entity {
 		case "up": worldY -= (gp.tileSize - gp.pixelSize*4); break;
 		case "down": worldY +=0; worldX -= (gp.tileSize - gp.pixelSize*4); break;
 		case "left": worldX -= (gp.tileSize - gp.pixelSize*4); worldY -= (gp.tileSize-gp.pixelSize*2); break;
-		case "right": worldX +=0; worldY-=(gp.tileSize - gp.pixelSize*2); break;
+		case "right": worldX -=gp.pixelSize*4; worldY-=(gp.tileSize - gp.pixelSize*2); break;
 		}
 		
 		solidArea.width = hitbox.width;
@@ -334,13 +352,14 @@ public class Player extends Entity {
 		solidArea.width = solidAreaWidth;
 		solidArea.height = solidAreaHeight;
 	}
-	
 	public void damageInteractiveTile(int i) {
 		if(i != 999 && gp.iTile[i].destructible == true 
 				&& gp.iTile[i].isCorrectItem(this) == true && gp.iTile[i].invincible == false) {
 			// gp.iTile[i].playSE();
 			gp.iTile[i].life--;
 			gp.iTile[i].invincible = true;
+			
+			generateParticle(gp.iTile[i], gp.iTile[i]);
 			
 			if (gp.iTile[i].life <= 0) {
 				gp.iTile[i] = gp.iTile[i].getDestroyedForm();
